@@ -20,6 +20,10 @@ $ git branch
 * dev
 master
 ```
+## user 등록
+```
+$ git config --global user.name "사용자명"
+```
 
 ## 변경사항 커밋
 ```
