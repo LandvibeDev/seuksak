@@ -23,6 +23,8 @@ master
 
 ## 변경사항 커밋
 ```
+$ git add 'file'
+$ or git add . ( all changed file )
 $ git commit -a -m 'message'
 $ git push origin dev
 ```
