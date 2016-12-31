@@ -20,17 +20,27 @@ $ git branch
 * dev
 master
 ```
-## user 등록
+#### user 등록
 ```
 $ git config --global user.name "사용자명"
 ```
 
-## 변경사항 커밋
+#### 변경사항 커밋
 ```
 $ git add 'file'
-$ or git add . ( all changed file )
+$ git add . ( all changed file )
 $ git commit -a -m 'message'
 $ git push origin dev
+```
+
+#### 의존성 관리
+```
+$ npm install
+```
+
+## 프로젝트 시작
+```
+$ DEBUG=seuksak:* npm start
 ```
 
 
