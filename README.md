@@ -35,7 +35,7 @@ $ git add . ( all changed file )
 $ git commit -a -m 'message'
 $ git push origin dev
 ```
-### git에서 실수로 git add 한  취소하는 방법
+#### git에서 실수로 git add 한  취소하는 방법
 ```
 git rm --cached <filename>
 ```
