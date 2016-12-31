@@ -4,8 +4,8 @@
   "private": true,
   "scripts": {
     "start": "node ./bin/www",
-    "product":"export NODE_ENV=production",
-    "development":"export NODE_ENV=development",
+    "product": "export NODE_ENV=production",
+    "development": "export NODE_ENV=development",
     "dev": "DEBUG=seuksak:* nodemon ./bin/www"
   },
   "dependencies": {
@@ -17,6 +17,7 @@
     "jade": "~1.11.0",
     "morgan": "~1.7.0",
     "mysql": "^2.12.0",
+    "nodemon": "^1.11.0",
     "path": "^0.12.7",
     "serve-favicon": "~2.3.0"
   }
