@@ -33,12 +33,13 @@ $ git commit -a -m 'message'
 $ git push origin dev
 ```
 
-#### 의존성 관리
+## 프로젝트 내려받을 때
 ```
+$ git pull origin dev
 $ npm install
 ```
 
-## 프로젝트 시작
+#### 프로젝트 시작 & 서버시작
 ```
 $ DEBUG=seuksak:* npm start
 ```
