@@ -48,7 +48,10 @@ $ npm install
 
 #### 프로젝트 시작 & 서버시작
 ```
-$ DEBUG=seuksak:* npm start
+$ npm run development (개발용)
+$ npm run product (배포용)
+$ DEBUG=seuksak:* npm start 
+$ npm run dev (추천, nodemon(바뀐 부분이 있으면 자동으로 서버 재시작))
 ```
 
 
