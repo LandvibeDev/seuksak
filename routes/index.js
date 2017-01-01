@@ -2,32 +2,21 @@ var express = require('express');
 var router = express.Router();
 
 /* GET home page. */
-router.get('/', function(req, res, next) {
 
-  var Git = require("nodegit");
-  Git.Clone("https://github.com/LandvibeDev/seuksak", "./tmp")
-    .then(function(repo){
-    return repo.getCommit("27408963debece5904b38099f41ccb98d7b07eea");
-    })
-    .then(function(commit) {
-      return commit.getEntry("README.md");
-    })
-    .then(function(entry){
-      return entry.getBlob().then(function(blob){
-        blob.entry = entry;
-        return blob;
-    });
-  })
-    .then(function(blob){
-      console.log(blob.entry.path() + blob.entry.sha() + blob.rawsize() + "b");
+var isAuthenticated = function (req, res, next) {
+    if (req.isAuthenticated())
+        return next();
+    res.redirect('/users');
+};
 
-      console.log(Array(72).join("=") + "\n\n");
+router.get('/',isAuthenticated, function(req, res, next) {
 
-      console.log(String(blob));
-    })
-  .catch(function(err) { console.log(err); });
-
+  console.log(req.user);
   res.render('project');
 });
 
+router.get('/logout',function(req,res,next){
+  req.logout();
+  res.redirect('/');
+});
 module.exports = router;

@@ -5,6 +5,9 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var mysql = require('mysql');
+var cookieSession = require('cookie-session');
+var flash = require('connect-flash');
+var passport = require('passport');
 
 var index = require('./routes/index');
 var users = require('./routes/users');
@@ -26,7 +29,17 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', index);
+app.use(cookieSession({
+    keys: ['key'],
+    cookie: {
+        maxAge: 100 * 60 * 60 // 쿠키 유효기간 1시간
+    }
+}));
+app.use(flash());
+app.use(passport.initialize());
+app.use(passport.session());
+
+app.use('/',index);
 app.use('/users', users);
 
 // catch 404 and forward to error handler
