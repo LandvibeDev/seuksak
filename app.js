@@ -11,6 +11,17 @@ var passport = require('passport');
 
 var index = require('./routes/index');
 var users = require('./routes/users');
+// build
+var build_detail = require('./routes/build_detail');
+var build_manage = require('./routes/build_manage');
+// group
+var group_detail = require('./routes/group_detail');
+var group_manage = require('./routes/group_manage');
+var group_add = require('./routes/group_add');
+// project
+var project_detail = require('./routes/project_detail');
+var project_manage = require('./routes/project_manage');
+var project_add = require('./routes/project_add');
 
 var app = express();
 
@@ -41,6 +52,17 @@ app.use(passport.session());
 
 app.use('/',index);
 app.use('/users', users);
+// build
+app.use('/buildDetail', build_detail);
+app.use('/buildManage', build_manage);
+// group
+app.use('/groupDetail', group_detail);
+app.use('/groupManage', group_manage);
+app.use('/groupAdd', group_add);
+// project
+app.use('/projectDetail', project_detail);
+app.use('/projectManage', project_manage);
+app.use('/projectAdd', project_add);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
