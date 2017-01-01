@@ -1,6 +1,7 @@
 var express = require('express');
 var mysql = require('mysql');
 var router = express.Router();
+var connection = require('./connection');
 
 /* GET users listing. */
 router.get('/', function(req, res, next) {
@@ -11,7 +12,7 @@ router.post('/',function(req,res,next){
     var id = req.body.id;
     var password = req.body.password;
 
-    client.query('SELECT * FROM User',function(error,result,fields){
+    connection.query('SELECT * FROM User',function(error,result,fields){
         if(error){
             console.log(error);
         }

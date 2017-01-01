@@ -5,6 +5,7 @@
 
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
+var connection = require('./connection');
 
 exports.setup = function () {
     passport.use(new LocalStrategy({
@@ -20,6 +21,8 @@ exports.setup = function () {
             } else {
                 return done(null, false, { message: 'Fail to login.' });
             }
+
+            
         }
     ));
 };
