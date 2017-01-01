@@ -1,38 +1,26 @@
 var express = require('express');
 var mysql = require('mysql');
 var router = express.Router();
-var connection = require('./connection');
+var passport = require('passport');
+
+
+require('./passport').setup();
+
+var isAuthenticated = function (req, res, next) {
+    if (!req.isAuthenticated())
+        return next();
+    res.redirect('/');
+};
 
 /* GET users listing. */
-router.get('/', function(req, res, next) {
+router.get('/',isAuthenticated,function(req, res, next) {
+
     res.render('login');
 });
 
-router.post('/',function(req,res,next){
-    var id = req.body.id;
-    var password = req.body.password;
-
-    connection.query('SELECT * FROM User',function(error,result,fields){
-        if(error){
-            console.log(error);
-        }
-        else{
-            var check = false;
-            console.log(id,password);
-            result.map(function(data,i){
-                console.log(data.id,data.password);
-                if(data.id == id && data.password == password){
-                   check =true;
-                }
-            });
-            if(check){
-                res.redirect('/');
-            }else {
-                res.redirect('/users');
-            }
-        }
+router.post('/', passport.authenticate('local', {failureRedirect: '/users', failureFlash: true}), // 인증실패시 401 리턴, {} -> 인증 스트레티지
+    function (req, res) {
+        res.redirect('/');
     });
-
-});
 
 module.exports = router;
