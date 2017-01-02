@@ -45,7 +45,7 @@
             <div class="row">
                 <div class="col-lg-12">
                     <h1 class="page-header">
-                        Dashboard <small>Statistics Overview</small>
+                        그룹<small>그룹 관리</small>
                     </h1>
                     <ol class="breadcrumb">
                         <li class="active">
@@ -68,9 +68,19 @@
                 <div class="col-lg-12">
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                            <h3 class="panel-title"><i class="fa fa-bar-chart-o fa-fw"></i> Area Chart</h3>
+                            <h3 class="panel-title"><i class="fa fa-bar-chart-o fa-fw"></i> 그룹 목록</h3>
                         </div>
                         <div class="panel-body">
+                            <table border ="1">
+                                <tr>
+                                    <th>group</th>
+                                </tr>
+                                <% groups.forEach(function(item,index){ %>
+                                <tr>
+                                    <td><a href="group/<%= item.group_id %>"><%= item.group_id %></a></td>
+                                </tr>
+                                <% });%>
+                            </table>
                         </div>
                     </div>
                 </div>

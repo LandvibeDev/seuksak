@@ -3,7 +3,6 @@ var mysql = require('mysql');
 var router = express.Router();
 var passport = require('passport');
 
-
 require('./passport').setup();
 
 var isAuthenticated = function (req, res, next) {
