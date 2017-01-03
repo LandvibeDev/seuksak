@@ -33,7 +33,7 @@ router.post('/', function(req, res, next){
     //clone_repository.checkoutBranch('dev');
     /*
     clone_repository.getBranch('refs/remotes/origin/' + 'dev')
-        .then(function(reference){
+        .then(function(reference){/
             // checkout branch
             return clone_repository.checkoutRef(reference);
         })
