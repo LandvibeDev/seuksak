@@ -18,7 +18,7 @@ router.get('/', function(req, res, next) {
             }
             console.log(result);
             _result = result;
-            res.render('group_manage',{groups:result,dup:false});
+            res.render('index',{groups:result,dup:false,child_page:"group_manage.ejs"});
         });
 });
 router.post('/', function(req, res, next){
@@ -29,7 +29,7 @@ router.post('/', function(req, res, next){
     var groupname = req.body.groupname;
     connection.query('INSERT INTO seuksak.Group (create_date, groupname) VALUES (?, ?)',[present, groupname], function(err,result){
         if(err){
-            res.render('group_manage',{groups:_result,dup:true});
+            res.render('index',{groups:_result,dup:true, child_page:"group_manage.ejs"});
         }else{
             connection.query('INSERT INTO seuksak.GroupMember (user_id, group_id) VALUES (?, ?)',
                 [req.user.id,result.insertId],function(error,result){
@@ -52,7 +52,7 @@ router.get('/:group_id',function(req,res,next){
                 console.log(error);
             }
 
-            res.render('group_detail',{info:result[0]});
+            res.render('index',{info:result[0],child_page:"group_detail.ejs"});
         });
 });
 

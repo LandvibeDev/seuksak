@@ -8,6 +8,7 @@ var mysql = require('mysql');
 var cookieSession = require('cookie-session');
 var flash = require('connect-flash');
 var passport = require('passport');
+var engine = require('ejs-locals');
 
 var index = require('./routes/index');
 var users = require('./routes/users');
@@ -19,8 +20,10 @@ var app = express();
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 app.set('view engine', 'ejs');
-app.engine('html',require('ejs').renderFile);
+app.engine('html', require('ejs').renderFile);
 
+// layout 을 도와줌
+app.engine('ejs', engine);
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));

@@ -12,7 +12,7 @@ var isAuthenticated = function (req, res, next) {
 router.get('/',isAuthenticated, function(req, res, next) {
 
   console.log(req.user);
-  res.render('home');
+  res.render('index', {child_page:'home'});
 });
 
 router.get('/logout',function(req,res,next){
