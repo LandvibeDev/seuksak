@@ -204,7 +204,8 @@ router.get('/:group_id/project/:project_id/build', function (request, response, 
 router.post('/:group_id/project/:project_id/build', function (request, response, next) {
     var group_id = parseInt(request.params.group_id);
     var project_id = parseInt(request.params.project_id);
-
+    var present_time = new Date();
+    var datetime = present_time.toFormat("YYYY-MM-DD HH24:MI:SS");
     /* 빌드 수행 */
     var path = '../seuksak_workspace/group/'+group_id+'/project/'+project_id+'/src/';
     exec('cd '+path+' && make',function(error,stdout,stderr){
@@ -213,6 +214,13 @@ router.post('/:group_id/project/:project_id/build', function (request, response,
         }
         else if(stdout){
             console.log(stdout);
+            var query_insert = connection.query('INSERT INTO seuksak.Build ' +
+                '(project_id, create_date,end_date,log,success) VALUES (?, ?, ?, ?, ?)'
+                ,[project_id,present_time,present_time,stdout,1]
+                ,function(error, result){
+                    console.log("success");
+                });
+
         }
         else if(stderr){
             console.log(stderr);
