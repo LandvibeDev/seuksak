@@ -6,10 +6,13 @@ var router = express.Router();
 var passport = require('passport');
 var connection = require('./connection');
 var date = require('date-utils');
-var node_git = require("nodegit");        // nodegit 모듈
+var node_git = require("nodegit");
+var multipart = require('connect-multiparty');   // file upload
+var multipart_middle_ware = multipart();
+var fs = require('fs');
+var app = express();
 
-var group_member_list;
-
+// 그룹 리스트 조회
 router.get('/', function(request, response, next) {
     connection.query('SELECT G.*' +
         'FROM seuksak.GroupMember as GM JOIN seuksak.Group as G ' +
@@ -19,11 +22,12 @@ router.get('/', function(request, response, next) {
             if(error){
                 console.log(error);
             }
-            console.log(result);
-            group_member_list = result;
+            var group_member_list = result;
             response.render('index',{group_member_list:group_member_list, dup:false, child_page:"group_manage.ejs"});
         });
 });
+
+// 그룹 인스턴스 생성
 router.post('/', function(request, response, next){
     var presenttime = new Date();
     var present = presenttime.toFormat("YYYY-MM-DD HH24:MI:SS");
@@ -46,6 +50,7 @@ router.post('/', function(request, response, next){
     });
 });
 
+// 그룹 인스턴스 조회
 router.get('/:group_id',function(request, response, next){
     var group_id = parseInt(request.params.group_id);
 
@@ -59,7 +64,7 @@ router.get('/:group_id',function(request, response, next){
         });
 });
 
-// 특정 그룹에 대한 프로젝트 관리
+// 그룹/프로젝트 리스트 조회
 router.get('/:group_id/project', function (request, response, next) {
     var group_id = parseInt(request.params.group_id);
 
@@ -78,24 +83,30 @@ router.get('/:group_id/project', function (request, response, next) {
     });
 });
 
-// 특정 그룹에 대한 프로젝트 생성
-router.post('/:group_id/project', function (request, response, next){
+// 그룹/프로젝트 인스턴스 생성
+var mid = multipart({uploadDir: '../tmp' });
+router.post('/:group_id/project', mid, function (request, response, next){
+    console.log('0000000000000000000');
     var git_url = request.body.git_url;
+    console.log('11111111111111111111111');
     var project_name = request.body.project_name;
+    console.log('222222222222222222222222');
+    console.log(request.body);
+    console.log(request.files);
+   // var make_file = request.files.make_file;
+    console.log('33333333333333333333');
+   // multipart({});
+    var make_file_path;
     var group_id = parseInt(request.params.group_id);
     var present_time = new Date();
     var datetime = present_time.toFormat("YYYY-MM-DD HH24:MI:SS");
     var project_id = 0;
     var clone_options = {};
-    clone_options.fetchOpts = {
-        callbacks: {
-            certificateCheck: function() { return 1;}
-        }
-    };
-    // git_url 에 있는 프로젝트를 clone
-    /* clone 할 project 에 대해 중복 검사 필요, group_id 반영 필요 */
     var local_path = "../seuksak_workspace/";
-
+    var make_file = request.files.make_file;
+    clone_options.fetchOpts = {
+        callbacks: {certificateCheck: function() { return 1;} }
+    };
     //clone_repository.checkoutBranch('dev');
     /*
      clone_repository.getBranch('refs/remotes/origin/' + 'dev')
@@ -104,44 +115,48 @@ router.post('/:group_id/project', function (request, response, next){
      return clone_repository.checkoutRef(reference);
      })
      */
+    console.log('99999999999999999');
+
 
     // project를 db에 반영
-    var query_insert = connection.query('INSERT INTO Project (group_id, git_url, project_name, create_date) VALUES (?, ?, ?, ?)'
-        ,[group_id, git_url, project_name, datetime]
+    var query_insert = connection.query('INSERT INTO Project (group_id, create_date, git_url, project_name) VALUES (?, ?, ?, ?)'
+        ,[group_id, datetime, git_url, project_name]
         ,function(error, result){
             if(error){
-                console.log(error);
-                throw error;
+                console.log(error); throw error;
             }
-            // console.log(query);
             project_id = result.insertId;
             local_path += "group/" + group_id + "/project/" + project_id + "/src/";
+            //multipart({uploadDir: local_path}); // file upload 경로
 
             // clone
             var clone_repository = node_git.Clone(git_url, local_path, clone_options);
 
             // db에 반영된 row 의 project_path update
             var query_update = connection.query('UPDATE Project SET project_path = ? WHERE id = ?'
-                ,[local_path, project_id]
+                ,[project_name, project_id]
                 ,function(error, result){
                     if(error) {
-                        console.log(error);
-                        throw error;
+                        console.log(error); throw error;
                     }
                 });
-            //response.render ('index',{info:result[0], group_inst:group_inst, child_page:"project_detail.ejs"});
-           response.redirect('/group/' + group_id + '/project/' + project_id);
+            var outputpath = __dirname+'/../../seuksak_workspace/group/'+group_id+'/project/'+project_id+'/src/'+make_file.name;
+            console.log('out:  '+outputpath);
+            fs.rename(make_file.path,outputpath,function(error){
+                response.redirect('/group/' + group_id + '/project/' + project_id);
+            });
+
         });
-
     // console.log('insert id : ' + project_id); // 주의! 해당 라인은 위의 insert 쿼리수행이 끝나기전에 수행됨. 비동기.
-
 });
 
-// 특정 그룹의 특정 프로젝트
+// 그룹/프로젝트 인스턴스 조회
 router.get('/:group_id/project/:project_id', function (request, response, next){
     var project_id = parseInt(request.params.project_id);
     var project_inst;
     var build_list;
+
+    console.log('3333333333333333333333');
 
     connection.query('SELECT * FROM seuksak.Project WHERE id = ?'
         ,[project_id]
@@ -158,14 +173,9 @@ router.get('/:group_id/project/:project_id', function (request, response, next){
                 if(error){
                     console.log(error); throw error;
                 }
-
                     build_list = result;
-                    console.log('--------------- build list ---------------')
-                    console.log(result);
                     response.render ('index',{project_inst:project_inst, build_list:build_list, child_page:"project_detail.ejs"});
                 });
-
-
         }
     )
 });
