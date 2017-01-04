@@ -69,7 +69,7 @@
                         </div>
                         <div class="panel-body">
                             <div class="text-left">
-                                <form action="" method="post">
+                                <form action="" method="post" enctype="multipart/form-data">
                                     <div class="table-responsive">
                                         <table class="table">
                                             <tr>
@@ -77,6 +77,9 @@
                                             </tr>
                                             <tr>
                                                 <td>project name </td><td><input type="text" name="project_name" required></td>
+                                            </tr>
+                                            <tr>
+                                                <td>makefile</td><td><input type="file" name="make_file" required></td>
                                             </tr>
                                         </table>
                                         <input class="btn btn-default" type="submit" value="생성">
