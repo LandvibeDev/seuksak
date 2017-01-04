@@ -11,7 +11,10 @@ var node_git = require("nodegit");        // nodegit 모듈
 var group_member_list;
 
 router.get('/', function(request, response, next) {
-    connection.query('SELECT * FROM GroupMember WHERE user_id = ?',
+    connection.query('SELECT G.*' +
+        'FROM seuksak.GroupMember as GM JOIN seuksak.Group as G ' +
+        'ON GM.group_id = G.id ' +
+        'WHERE user_id = ?',
         [request.user.id],function(error,result){
             if(error){
                 console.log(error);
@@ -60,7 +63,7 @@ router.get('/:group_id',function(request, response, next){
 router.get('/:group_id/project', function (request, response, next) {
     var group_id = parseInt(request.params.group_id);
 
-    connection.query('SELECT * ' +
+    connection.query('SELECT P.*' +
                     'FROM seuksak.Project as P JOIN seuksak.Group as G ' +
                     'ON P.group_id = G.id ' +
                     'WHERE G.id = ?',
@@ -70,14 +73,9 @@ router.get('/:group_id/project', function (request, response, next) {
             console.log(error);
             throw error;
         }
-        console.log(result);
         var project_group_list = result; // project_manage.ejs forEach 에 사용시에는 result[0] 말고 result
-
-
         response.render('index',{project_group_list:project_group_list, child_page:"project_manage.ejs"});
     });
-
-
 });
 
 // 특정 그룹에 대한 프로젝트 생성
@@ -143,20 +141,60 @@ router.post('/:group_id/project', function (request, response, next){
 router.get('/:group_id/project/:project_id', function (request, response, next){
     var project_id = parseInt(request.params.project_id);
     var project_inst;
+    var build_list;
 
     connection.query('SELECT * FROM seuksak.Project WHERE id = ?'
         ,[project_id]
         ,function(error, result){
             if(error){
+                console.log(error); throw error;
+            }
+            project_inst = result[0];
+
+            // 해당 프로젝트에 속하는 빌드 목록
+            connection.query('SELECT * FROM seuksak.Build WHERE id = ?'
+            ,[project_id]
+            ,function(error, result){
+                if(error){
+                    console.log(error); throw error;
+                }
+
+                    build_list = result;
+                    console.log('--------------- build list ---------------')
+                    console.log(result);
+                    response.render ('index',{project_inst:project_inst, build_list:build_list, child_page:"project_detail.ejs"});
+                });
+
+
+        }
+    )
+});
+
+// 그룹/프로젝트/빌드 리스트 조회
+router.get('/:group_id/project/:project_id/build', function (request, response, next) {
+    var project_id = parseInt(request.params.project_id);
+
+    connection.query('SELECT * FROM seuksak.Build WHERE project_id = ?',
+        [project_id],
+        function(error, result){
+            if(error){
                 console.log(error);
                 throw error;
             }
-            project_inst = result[0];
-            response.render ('index',{info:result[0], project_inst:project_inst, child_page:"project_detail.ejs"});
-        }
-    )
-
-
+            var build_list = result;
+            response.render('index',{build_list:build_list, child_page:"build_manage.ejs"});
+        });
 });
+
+// 그룹/프로젝트/빌드 인스턴스 생성
+router.post('/:group_id/project/:project_id/build', function (request, response, next) {
+    var group_id = parseInt(request.params.group_id);
+    var project_id = parseInt(request.params.project_id);
+
+    /* 빌드 수행 */
+
+
+    response.redirect('/group/' + group_id + '/project/' + project_id + '/build')
+})
 
 module.exports = router;
