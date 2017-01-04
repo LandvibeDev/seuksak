@@ -90,15 +90,10 @@ router.get('/:group_id/project', function (request, response, next) {
 // 그룹/프로젝트 인스턴스 생성
 var mid = multipart({uploadDir: '../tmp' });
 router.post('/:group_id/project', mid, function (request, response, next){
-    console.log('0000000000000000000');
     var git_url = request.body.git_url;
-    console.log('11111111111111111111111');
     var project_name = request.body.project_name;
-    console.log('222222222222222222222222');
-    console.log(request.body);
-    console.log(request.files);
+    var result_file_name = request.body.result_file_name;
    // var make_file = request.files.make_file;
-    console.log('33333333333333333333');
    // multipart({});
     var make_file_path;
     var group_id = parseInt(request.params.group_id);
@@ -119,12 +114,11 @@ router.post('/:group_id/project', mid, function (request, response, next){
      return clone_repository.checkoutRef(reference);
      })
      */
-    console.log('99999999999999999');
 
 
     // project를 db에 반영
-    var query_insert = connection.query('INSERT INTO Project (group_id, create_date, git_url, project_name) VALUES (?, ?, ?, ?)'
-        ,[group_id, datetime, git_url, project_name]
+    var query_insert = connection.query('INSERT INTO Project (group_id, create_date, git_url, project_name, result_file_name) VALUES (?, ?, ?, ?, ?)'
+        ,[group_id, datetime, git_url, project_name, result_file_name]
         ,function(error, result){
             if(error){
                 console.log(error); throw error;
@@ -246,5 +240,9 @@ router.get('/:group_id/project/:project_id/build/:build_id', function(request, r
         });
 });
 
+// 그룹/프로젝트/빌드/빌드결과 다운로드
+router.get('/:group_id/project/:project_id/build/:build_id/download', function(request, response, next){
+
+});
 
 module.exports = router;
