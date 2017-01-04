@@ -213,7 +213,6 @@ router.post('/:group_id/project/:project_id/build', function (request, response,
             console.log(error);
         }
         else if(stdout){
-            console.log(stdout);
             var query_insert = connection.query('INSERT INTO seuksak.Build ' +
                 '(project_id, create_date,end_date,log,success) VALUES (?, ?, ?, ?, ?)'
                 ,[project_id,present_time,present_time,stdout,1]
