@@ -155,7 +155,6 @@ router.get('/:group_id/project/:project_id', function (request, response, next){
     var project_inst;
     var build_list;
 
-    console.log('3333333333333333333333');
 
     connection.query('SELECT * FROM seuksak.Project WHERE id = ?'
         ,[project_id]
