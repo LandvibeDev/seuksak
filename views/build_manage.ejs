@@ -40,15 +40,19 @@
                                     <tr>
                                         <th>success</th>
                                         <th>create date</th>
+                                        <th>end date</th>
                                     </tr>
                                     <% build_list.forEach(function(item, index){ %>
                                     <tr>
                                         <td><a href="build/<%= item.id %>">
-                                                <%= item.sucess %>
+                                                <%= item.success %>
                                             </a>
                                         </td>
                                         <td>
                                             <%= item.create_date %>
+                                        </td>
+                                        <td>
+                                            <%= item.end_date %>
                                         </td>
                                     </tr>
                                     <% });%>
