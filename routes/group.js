@@ -6,7 +6,9 @@ var router = express.Router();
 var passport = require('passport');
 var connection = require('./connection');
 var date = require('date-utils');
-var group_member_list;
+
+var node_git = require("nodegit");
+var http = require('http');
 
 var node_git = require("nodegit"); // nodegit을 사용하여 깃소스 관리
 var multipart = require('connect-multiparty');   // file 업로드 관련
@@ -89,15 +91,10 @@ router.get('/:group_id/project', function (request, response, next) {
 // 그룹/프로젝트 인스턴스 생성
 var mid = multipart({uploadDir: '../tmp' });
 router.post('/:group_id/project', mid, function (request, response, next){
-    console.log('0000000000000000000');
     var git_url = request.body.git_url;
-    console.log('11111111111111111111111');
     var project_name = request.body.project_name;
-    console.log('222222222222222222222222');
-    console.log(request.body);
-    console.log(request.files);
+    var result_file_name = request.body.result_file_name;
    // var make_file = request.files.make_file;
-    console.log('33333333333333333333');
    // multipart({});
     var make_file_path;
     var group_id = parseInt(request.params.group_id);
@@ -118,12 +115,11 @@ router.post('/:group_id/project', mid, function (request, response, next){
      return clone_repository.checkoutRef(reference);
      })
      */
-    console.log('99999999999999999');
 
 
     // project를 db에 반영
-    var query_insert = connection.query('INSERT INTO Project (group_id, create_date, git_url, project_name) VALUES (?, ?, ?, ?)'
-        ,[group_id, datetime, git_url, project_name]
+    var query_insert = connection.query('INSERT INTO Project (group_id, create_date, git_url, project_name, result_file_name) VALUES (?, ?, ?, ?, ?)'
+        ,[group_id, datetime, git_url, project_name, result_file_name]
         ,function(error, result){
             if(error){
                 console.log(error); throw error;
@@ -244,5 +240,25 @@ router.get('/:group_id/project/:project_id/build/:build_id', function(request, r
         });
 });
 
+// 그룹/프로젝트/빌드/빌드결과 다운로드
+router.get('/:group_id/project/:project_id/build/:build_id/download', function(request, response, next){
+    var build_id = request.params.build_id;
+    var group_id = request.params.group_id;
+    var project_id = request.params.project_id;
+    connection.query('SELECT * FROM seuksak.Project where id = ?',[project_id],function(error,result){
+        var download_path = __dirname + '/../../seuksak_workspace/group/'+group_id+'/project/'+project_id+'/src/'+result[0].result_file_name;
+
+        fs.readFile(download_path, 'binary', function (error, data) {
+            response.writeHead(200,
+                {'Content-Type' : 'binary',
+                    'Content-Disposition':'attachment;filename=' + result[0].result_file_name
+                });
+            response.write(data);
+            //response.redirect('/group/' + group_id + '/project/' + project_id + '/build/'+build_id);
+            response.end();
+        });
+    });
+
+});
 
 module.exports = router;

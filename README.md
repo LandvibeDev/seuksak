@@ -1,59 +1,23 @@
 # seuksak
 
 
-## 프로젝트 복사
+## 개요
 
-#### Repository 복사
-```
-$ git clone https://github.com/LandvibeDev/seuksak
-```
-#### dev branch 변경
-```
-$ cd seuksak
-$ git branch
-*master
-$ git checkout dev
-```
-#### 변경된 branch 확인
-```
-$ git branch
-* dev
-master
-```
-#### user 등록
-```
-$ git config --global user.name "사용자명"
-```
+대학생들이 손쉽게 사용할 수 있는 자동화된 팀 프로젝트 빌드&분석 툴
+그저 팀원이 '슥'하고 던진 Github URL을 이용하여 자동화된 빌드&분석을 거친 데이터(결과물 및 결과정보)를 '삭'하고 내놓는다.
 
-#### 변경사항 커밋
-```
-# 주의!! 작업을 시작하기 전 항상 먼저 pull 받고 시작한다. 작업을 마친 후 git에 작업한 소스코드를 반영한다.
-$ git pull origin dev
+## 주요 기능
 
-$ git add 'file'
-$ git add . ( all changed file )
-$ git commit -a -m 'message'
-$ git push origin dev
-```
-#### git에서 실수로 git add 한  취소하는 방법
-```
-git rm --cached <filename>
-```
+github 연동을 통한 코드관리
+CI 서버 개념을 탑재한 자동화된 빌드
+빌드 후 결과물에대한 처리(에러 분석, 빌드 정보, 결과물 보관)
 
-## 프로젝트 내려받을 때
-```
-$ git pull origin dev
-$ npm install
-```
+## 확장성
 
-#### 프로젝트 시작 & 서버시작
-```
-$ npm run development (개발용)
-$ npm run product (배포용)
-$ DEBUG=seuksak:* npm start 
-$ npm run dev (추천, nodemon(바뀐 부분이 있으면 자동으로 서버 재시작))
-```
+탑재된 언어이외의 다양한 언어 지원
+커뮤니티 기능을 추가하여 다양한 피드백을 지원
 
+## 관련 소개자료
 
-markdown 문법
-https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet
+PPT URL : http://www.slideshare.net/SeongHyukJeong/seuk-sak
+video URL : https://youtu.be/azqUOcwPvRY
