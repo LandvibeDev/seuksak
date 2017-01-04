@@ -20,9 +20,11 @@ CI 서버 개념을 탑재한 자동화된 빌드
 ## 관련 소개자료
 
 PPT URL : http://www.slideshare.net/SeongHyukJeong/seuk-sak
+
 video URL : https://youtu.be/azqUOcwPvRY
 
 테스트 웹 사이트 : http://52.78.234.237:3000/
+
 테스트 ID : lso, PW : 1234
 
 ## 프로젝트 복사
