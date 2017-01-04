@@ -21,3 +21,25 @@ CI 서버 개념을 탑재한 자동화된 빌드
 
 PPT URL : http://www.slideshare.net/SeongHyukJeong/seuk-sak
 video URL : https://youtu.be/azqUOcwPvRY
+
+테스트 웹 사이트 : http://52.78.234.237:3000/
+테스트 ID : lso, PW : 1234
+
+## 프로젝트 복사
+
+#### Repository 복사
+```
+$ git clone https://github.com/LandvibeDev/seuksak
+```
+
+#### dev branch 변경
+```
+cd seuksak
+git checkout dev
+```
+
+#### 프로젝트 모듈 설치 & 서버시작
+```
+npm install
+npm start
+```
