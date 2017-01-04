@@ -7,7 +7,7 @@ var bodyParser = require('body-parser');
 var mysql = require('mysql');
 var cookieSession = require('cookie-session');
 var flash = require('connect-flash');
-var passport = require('passport');
+var passport = require('passport'); // 로그인 세션 관리를 위해 passport를 사용, 후에 토큰으로 보안 관리도 할 예정
 var engine = require('ejs-locals');
 
 var index = require('./routes/index');

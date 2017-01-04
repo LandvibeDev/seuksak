@@ -4,7 +4,7 @@ var router = express.Router();
 /* GET home page. */
 
 var isAuthenticated = function (req, res, next) {
-    if (req.isAuthenticated())
+    if (req.isAuthenticated()) //connect에 내장된 함수
         return next();
     res.redirect('/users');
 };

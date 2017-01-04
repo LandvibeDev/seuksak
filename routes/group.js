@@ -6,16 +6,15 @@ var router = express.Router();
 var passport = require('passport');
 var connection = require('./connection');
 var date = require('date-utils');
-var node_git = require("nodegit");        // nodegit 모듈
 var group_member_list;
 
-var node_git = require("nodegit");
-var multipart = require('connect-multiparty');   // file upload
+var node_git = require("nodegit"); // nodegit을 사용하여 깃소스 관리
+var multipart = require('connect-multiparty');   // file 업로드 관련
 var multipart_middle_ware = multipart();
 var fs = require('fs');
 var app = express();
 
-var exec = require('child_process').exec;
+var exec = require('child_process').exec; // child-process를 사용, 프로그램 실행
 // 그룹 리스트 조회
 router.get('/', function(request, response, next) {
     connection.query('SELECT G.*' +

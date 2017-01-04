@@ -38,7 +38,7 @@ exports.setup = function () {
                     });
 
                     if(_id){
-                        var user = {id:_id}; // user id를 넘겨준다
+                        var user = {id:_id}; // 세션에 user를 넣는다
                         return done(null,user); // 인증 성공시
                     }
                     else{
