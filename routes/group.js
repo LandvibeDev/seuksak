@@ -7,7 +7,7 @@ var passport = require('passport');
 var connection = require('./connection');
 var date = require('date-utils');
 var node_git = require("nodegit");        // nodegit 모듈
-
+var exec = require('child_process').exec;
 var group_member_list;
 
 router.get('/', function(request, response, next) {
@@ -192,9 +192,20 @@ router.post('/:group_id/project/:project_id/build', function (request, response,
     var project_id = parseInt(request.params.project_id);
 
     /* 빌드 수행 */
-
+    var path = '../seuksak_workspace/group/'+group_id+'/project/'+project_id+'/src/';
+    exec('cd '+path+' && ./test.sh',function(error,stdout,stderr){
+        if(error){
+            console.log(error);
+        }
+        else if(stdout){
+            console.log(stdout);
+        }
+        else if(stderr){
+            console.log(stderr);
+        }
+    });
 
     response.redirect('/group/' + group_id + '/project/' + project_id + '/build')
-})
+});
 
 module.exports = router;
