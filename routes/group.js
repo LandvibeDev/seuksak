@@ -207,7 +207,7 @@ router.post('/:group_id/project/:project_id/build', function (request, response,
 
     /* 빌드 수행 */
     var path = '../seuksak_workspace/group/'+group_id+'/project/'+project_id+'/src/';
-    exec('cd '+path+' && ./test.sh',function(error,stdout,stderr){
+    exec('cd '+path+' && make',function(error,stdout,stderr){
         if(error){
             console.log(error);
         }
