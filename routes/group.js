@@ -196,7 +196,7 @@ router.get('/:group_id/project/:project_id/build', function (request, response, 
                 throw error;
             }
             var build_list = result;
-            response.render('index',{build_list:build_list, child_page:"build_manage.ejs"});
+            response.render('index', {build_list:build_list, child_page:"build_manage.ejs"});
         });
 });
 
@@ -221,5 +221,22 @@ router.post('/:group_id/project/:project_id/build', function (request, response,
 
     response.redirect('/group/' + group_id + '/project/' + project_id + '/build')
 });
+
+// 그룹/프로젝트/빌드 인스턴스 조회
+router.get('/:group_id/project/:project_id/build/:build_id', function(request, response, next){
+    var project_id = parseInt(request.params.project_id);
+    var build_id = parseInt(request.params.build_id);
+
+    connection.query('SELECT * FROM seuksak.Build WHERE id = ?'
+    ,[build_id]
+    ,function(error, result){
+            if(error){
+                console.log(error); throw error;
+            }
+            var build_inst = result[0];
+            response.render('index', {build_inst:build_inst, child_page:"build_detail.ejs"});
+        });
+});
+
 
 module.exports = router;
