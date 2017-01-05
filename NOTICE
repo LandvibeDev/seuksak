@@ -1,0 +1,23 @@
+seuksak
+Copyright (c) 2017 <Jeong SeongHyuk, Jeong GuBeom, Lee SungOn>
+
+The seuksak project contains subcomponents with separate copyright notices and license terms. 
+Your use of the source code for the these subcomponents is subject to the terms and conditions of the following licenses.
+
+=======================================================================
+nodejs (https://nodejs.org/en/)
+=======================================================================
+
+=======================================================================
+bootstrap (https://github.com/twbs/bootstrap)
+=======================================================================
+
+=======================================================================
+nodegit (http://www.nodegit.org/)
+=======================================================================
+
+=======================================================================
+mysql (https://www.mysql.com/)
+=======================================================================
+
+
