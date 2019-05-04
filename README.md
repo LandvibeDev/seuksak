@@ -1,6 +1,5 @@
 # seuksak
 
-
 ## 개요
 
 대학생들이 손쉽게 사용할 수 있는 자동화된 팀 프로젝트 빌드&분석 툴
@@ -45,3 +44,27 @@ git checkout dev
 npm install
 npm start
 ```
+
+#### dev branch 변경
+```
+$ cd seuksak
+$ git branch
+*master
+$ git checkout dev
+```
+#### 변경된 branch 확인
+```
+$ git branch
+* dev
+master
+```
+
+## 변경사항 커밋
+```
+$ git commit -a -m 'message'
+$ git push origin dev
+```
+
+
+markdown 문법
+https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet
